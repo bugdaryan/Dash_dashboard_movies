@@ -1,0 +1,7 @@
+dash
+names
+numpy
+pandas
+plotly
+openpyxl
+xlrd
