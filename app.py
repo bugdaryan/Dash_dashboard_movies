@@ -1,44 +1,23 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import html, dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 import os
 from callbacks import register_overview_callbacks, register_find_movie_callbacks
 from pages import overview_page, find_movie_page
 
-app = dash.Dash(__name__)
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 register_find_movie_callbacks(app)
 register_overview_callbacks(app)
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),html.Div(id="page-content")
-    ])
-
-
-@app.callback(Output('navbar', 'children'),
-                [Input('page-content', 'children')],
-                [State('url', 'pathname')])
-def update_navlinks(children, pathname):
-    nav_items = {
-        "/overview":dbc.NavItem(dbc.NavLink("Overview", href="/overview")),
-        "/find_movie":dbc.NavItem(dbc.NavLink("Find Movie", href="/find_movie"))
-    }
-    if pathname in nav_items.keys():
-        nav_items[pathname].active=True
-
-    return list(nav_items.values())
-
-
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
-def display_current_page(pathname):
-
-    if pathname == '/overview':
-        return overview_page
-    elif pathname == '/find_movie':
-        return find_movie_page
-
-    return overview_page
+    html.H1('Movie Analysis', style={'textAlign': 'center'}),
+    dcc.Tabs(id="tabs-graph", value='overview-tab', children=[
+        dcc.Tab(overview_page, label='Overview', value='overview-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
+        dcc.Tab(find_movie_page, label='Find a movie', value='find-movie-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
+    ]),
+    html.Div(id="page-content")
+])
 
 
 if __name__ == "__main__":
