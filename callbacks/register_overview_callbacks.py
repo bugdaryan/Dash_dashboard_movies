@@ -9,7 +9,7 @@ import plotly.express as px
 def register_overview_callbacks(app):
 
 #################### AVERAGE RATING ####################
-    @app.callback(Output('average-rating-over-time-graph', 'figure'),
+    @app.callback(Output('average-rating-over-time-graph', 'children'),
         [Input('average-rating-over-time', 'children')])
     def init_average_rating(children):
         df = pd.read_csv('data/overview.csv')
@@ -23,10 +23,12 @@ def register_overview_callbacks(app):
             'yaxis_title': 'Average rating',
         })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
     
-    @app.callback(Output('average-rating-by-category-graph', 'figure'),
+    @app.callback(Output('average-rating-by-category-graph', 'children'),
         [Input('average-rating-by-category', 'children'),
         Input('average-rating-category-dropdown', 'value')])
     def init_average_rating_by_category(children, selected_genres):
@@ -45,10 +47,12 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Average rating',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
 
-    @app.callback(Output('average-rating-by-top-categories-graph', 'figure'),
+    @app.callback(Output('average-rating-by-top-categories-graph', 'children'),
         [Input('average-rating-by-top-categories', 'children'),
         Input('average-rating-category-dropdown', 'value')])
     def init_average_rating_by_top_categories(children, selected_genres):
@@ -66,7 +70,9 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Average rating',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
     
 
@@ -81,7 +87,7 @@ def register_overview_callbacks(app):
         return all_genres, top_genres
 
 #################### COUNTS ####################
-    @app.callback(Output('counts-over-time-graph', 'figure'),
+    @app.callback(Output('counts-over-time-graph', 'children'),
         [Input('counts-over-time', 'children')])
     def init_counts(children):
         df = pd.read_csv('data/overview.csv')
@@ -96,10 +102,12 @@ def register_overview_callbacks(app):
             'yaxis_title': 'Count',
         })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
     
-    @app.callback(Output('counts-by-category-graph', 'figure'),
+    @app.callback(Output('counts-by-category-graph', 'children'),
         [Input('counts-by-category', 'children'),
         Input('counts-category-dropdown', 'value')])
     def init_counts_by_category(children, selected_genres):
@@ -118,10 +126,12 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Count',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
 
-    @app.callback(Output('counts-by-top-categories-graph', 'figure'),
+    @app.callback(Output('counts-by-top-categories-graph', 'children'),
         [Input('counts-by-top-categories', 'children'),
         Input('counts-category-dropdown', 'value')])
     def init_counts_by_top_categories(children, selected_genres):
@@ -139,7 +149,9 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Average rating',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
 
     @app.callback([Output('counts-category-dropdown', 'options'),
@@ -155,7 +167,7 @@ def register_overview_callbacks(app):
 
     
 #################### AVERAGE REVENUE ####################
-    @app.callback(Output('average-revenue-over-time-graph', 'figure'),
+    @app.callback(Output('average-revenue-over-time-graph', 'children'),
         [Input('average-revenue-over-time', 'children')])
     def init_average_revenue(children):
         df = pd.read_csv('data/overview.csv')
@@ -169,10 +181,12 @@ def register_overview_callbacks(app):
             'yaxis_title': 'Average revenue',
         })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
     
-    @app.callback(Output('average-revenue-by-category-graph', 'figure'),
+    @app.callback(Output('average-revenue-by-category-graph', 'children'),
         [Input('average-revenue-by-category', 'children'),
         Input('average-revenue-category-dropdown', 'value')])
     def init_average_revenue_by_category(children, selected_genres):
@@ -191,10 +205,12 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Average revenue',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
 
-    @app.callback(Output('average-revenue-by-top-categories-graph', 'figure'),
+    @app.callback(Output('average-revenue-by-top-categories-graph', 'children'),
         [Input('average-revenue-by-top-categories', 'children'),
         Input('average-revenue-category-dropdown', 'value')])
     def init_average_revenue_by_top_categories(children, selected_genres):
@@ -212,7 +228,9 @@ def register_overview_callbacks(app):
                 'yaxis_title': 'Average revenue',
             })
 
-        return fig
+        graph = dcc.Graph(figure=fig)
+
+        return graph
 
     
 
