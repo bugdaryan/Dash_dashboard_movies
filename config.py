@@ -1,8 +1,9 @@
+from MovieFinder import MovieFinder
 import dotenv
 import os
 
 dotenv.load_dotenv()
-
+MOVIE_INFO_API = os.environ['MOVIE_INFO_API']
 MONGODB_URI = os.environ['MONGODB_URI']
 
 find_button_clicks = {
@@ -11,3 +12,5 @@ find_button_clicks = {
     2:0,
     3:0
 }
+
+movie_finder = MovieFinder()
