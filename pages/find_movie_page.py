@@ -17,8 +17,8 @@ find_movie_page = dbc.Container([
                 html.Br(),
                 dbc.Row([
                     html.Div([
-                        dbc.Button(
-                            "Advanced settings",
+                        dbc.Button([
+                            "Advanced settings\t", html.I(className="fa-solid fa-angle-up")],
                             id="advanced-collapse-button",
                             className="mb-3",
                             color="primary",
@@ -28,42 +28,74 @@ find_movie_page = dbc.Container([
                             dbc.Row([
                                 dbc.Col([
                                     html.Div([
-                                        dbc.Checkbox(value=True,
-                                            id="search-by-keyword-checkbox",
-                                            label="Search by keywords"
-                                        ),
-                                        dbc.Checkbox(value=True,
-                                            id="fuzzy-match-checkbox",
-                                            label="Fuzzy match"
-                                        ),
-                                        dbc.Checkbox(value=True,
-                                            id="case-insensitive-checkbox",
-                                            label="Case insensitive"
-                                        ),
-                                        dbc.Checkbox(value=True,
-                                            id="prioritize-titles-checkbox",
-                                            label="Prioritize titles over keywords"
-                                        )
+                                        html.Div([
+                                            dbc.Label('Select options to search by and priority'),
+                                            dcc.Dropdown(
+                                                id='search-by-dropdown', 
+                                                options=['Title', 'Cast', 'Crew', 'Keywords'], 
+                                                value=['Title', 'Cast', 'Crew', 'Keywords'], 
+                                                multi=True
+                                            )
+                                        ]),
+                                        html.Br(),
+                                        dbc.Row([
+                                            dbc.Col([
+                                                dbc.Input(value=1982,
+                                                    min=1982,
+                                                    id="min-movie-year-input",
+                                                    type='number'
+                                                )
+                                            ], width=4),
+                                            dbc.Col([
+                                                dbc.Label("Minimum movie release year")
+                                            ], width=6)
+                                        ]),
+                                        html.Br(),
+                                        dbc.Row([
+                                            dbc.Col([
+                                                dbc.Input(value=2017,
+                                                    max=2017,
+                                                    id="max-movie-year-input",
+                                                    type='number'
+                                                )
+                                            ], width=4),
+                                            dbc.Col([
+                                                dbc.Label("Maximum movie release year")
+                                            ], width=6)
+                                        ]),
                                     ])
                                 ], width=6),
                                 dbc.Col([
                                     html.Div([
-                                        dcc.Input(value=5,
-                                            id="min-movie-rating-input",
-                                            label="Minimum movie rating"
-                                        ),
+                                        dbc.Row([
+                                            dbc.Col([
+                                                dbc.Input(value=5,
+                                                    id="min-movie-rating-input",
+                                                    type='number'
+                                                )
+                                            ], width=4),
+                                            dbc.Col([
+                                                dbc.Label("Minimum movie rating")
+                                            ], width=6)
+                                        ]),
+                                        html.Br(),
+                                        dbc.Row([
+                                            dbc.Col([
+                                                dbc.Input(value=30,
+                                                    id="limit-search-input",
+                                                    type='number'
+                                                )
+                                            ], width=4),
+                                            dbc.Col([
+                                                dbc.Label("Limit search")
+                                            ], width=6)
+                                        ]),
+                                        html.Br(),
                                         dbc.Checkbox(value=True,
-                                            id="fuzzy-match-checkbox1",
+                                            id="fuzzy-match-checkbox",
                                             label="Fuzzy match"
                                         ),
-                                        dbc.Checkbox(value=True,
-                                            id="case-insensitive-checkbox1",
-                                            label="Case insensitive"
-                                        ),
-                                        dbc.Checkbox(value=True,
-                                            id="prioritize-titles-checkbox1",
-                                            label="Prioritize titles over keywords"
-                                        )
+                                        html.Br(),
                                     ])
                                 ], width=6)
                             ])
@@ -76,6 +108,7 @@ find_movie_page = dbc.Container([
                 ])
             ], width=4),
         ]),
+        html.Br(),
         html.Br(),
         dbc.Row([
             dbc.Row([

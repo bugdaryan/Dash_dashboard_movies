@@ -8,6 +8,7 @@ import plotly.express as px
 import json
 from glob import glob
 from config import find_button_clicks
+from collections import OrderedDict
 
 def register_find_movie_callbacks(app):
     @app.callback([Output('top-movie-1', 'children'),
@@ -39,8 +40,14 @@ def register_find_movie_callbacks(app):
     Input('top-movie-2-find-btn', 'n_clicks'),
     Input('top-movie-3-find-btn', 'n_clicks'),
     Input('find-movie-btn', 'n_clicks')],
-    [State('movie-input', 'value')])
-    def find_movie(t1_btn, t2_btn, t3_btn, find_btn, input):
+    [State('movie-input', 'value'),
+    State('min-movie-year-input', 'value'),
+    State('max-movie-year-input', 'value'),
+    State('search-by-dropdown', 'value'),
+    State('min-movie-rating-input', 'value'),
+    State('limit-search-input', 'value'),
+    State('fuzzy-match-checkbox', 'value')])
+    def find_movie(t1_btn, t2_btn, t3_btn, find_btn, input, *args):
         t = None 
         if find_button_clicks[1] != t1_btn:
             t = 'button 1 was pressed'
@@ -54,19 +61,37 @@ def register_find_movie_callbacks(app):
         if find_button_clicks[-1] != find_btn:
             t = 'find button was pressed'
             find_button_clicks[-1] = find_btn
+        
+        options = dict(zip(['search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], args))
+        if not options['search_by']:
+            options['search_by'] = ['Title']
 
-        return [t]
+        return [str(options)]
 
 
     @app.callback(
-        Output("advanced-collapse", "is_open"),
+        [Output("advanced-collapse", "is_open"),
+        Output("advanced-collapse-button", "children")],
         [Input("advanced-collapse-button", "n_clicks")],
-        [State("advanced-collapse", "is_open")],
+        [State("advanced-collapse", "is_open"),
+        State("advanced-collapse-button", "children")],
     )
-    def toggle_collapse(n, is_open):
+    def toggle_collapse(n, is_open, children):
+        
+        class_name = children[1]['props']['className']
+        print(class_name)
+        if class_name == 'fa-solid fa-angle-down':
+            class_name = 'fa-solid fa-angle-up'
+        else:
+            class_name = 'fa-solid fa-angle-down'
+        
+        children = [children[0], html.I(className=class_name)]
+
         if n:
-            return not is_open
-        return is_open
+            return not is_open, children
+        return is_open, children
+
+
         
 
         
