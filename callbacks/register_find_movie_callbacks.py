@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import json
 from glob import glob
-from config import find_button_clicks
+from config import find_button_clicks, movie_finder
 from collections import OrderedDict
 
 def register_find_movie_callbacks(app):
@@ -16,17 +16,14 @@ def register_find_movie_callbacks(app):
     Output('top-movie-3', 'children')],
     [Input('find-movie-page', 'children')])
     def init_top_movies(children):
-        movies = []
-        movie_images = ['https://images.photowall.com/products/59586/pulp-fiction.jpg?h=699', 'https://m.media-amazon.com/images/I/41ekyDiO1ZL._AC_.jpg', 'https://collider.com/wp-content/uploads/i-origins-poster1.jpg']
-        for i, path in enumerate(glob('data/top-movie-?.json')):
-            with open(path, 'r') as f:
-                movie_json = json.load(f)
 
-            overview_text = ', '.join([m['name'] for m in movie_json['cast'][:5]])
+        movies = []
+        for i, movie in enumerate(movie_finder.top_movies):
+            overview_text = ', '.join([m['name'] for m in movie['cast'][:5]])
             movies.append([
-                dbc.CardImg(src=movie_images[i], top=True),
+                dbc.CardImg(src=movie['image'], top=True),
                 dbc.CardBody([
-                        html.H5(movie_json['title'], className="card-title"),
+                        html.H5(movie['title'], className="card-title"),
                         html.P([html.B('Cast: '), overview_text]),
                         dbc.Button("Find", color="primary", id=f'top-movie-{i+1}-find-btn', n_clicks=0),
                     ]
@@ -35,7 +32,7 @@ def register_find_movie_callbacks(app):
         
         return movies
 
-    @app.callback([Output('search-results', 'children')],
+    @app.callback(Output('tabs-graph', 'value'),
     [Input('top-movie-1-find-btn', 'n_clicks'),
     Input('top-movie-2-find-btn', 'n_clicks'),
     Input('top-movie-3-find-btn', 'n_clicks'),
@@ -47,26 +44,31 @@ def register_find_movie_callbacks(app):
     State('min-movie-rating-input', 'value'),
     State('limit-search-input', 'value'),
     State('fuzzy-match-checkbox', 'value')])
-    def find_movie(t1_btn, t2_btn, t3_btn, find_btn, input, *args):
+    def find_movie_click(t1_btn, t2_btn, t3_btn, find_btn, input, *args):
         t = None 
         if find_button_clicks[1] != t1_btn:
-            t = 'button 1 was pressed'
+            t = 1
             find_button_clicks[1] = t1_btn
-        if find_button_clicks[2] != t2_btn:
-            t = 'button 2 was pressed'
+        elif find_button_clicks[2] != t2_btn:
+            t = 2
             find_button_clicks[2] = t2_btn
-        if find_button_clicks[3] != t3_btn:
-            t = 'button 3 was pressed'
+        elif find_button_clicks[3] != t3_btn:
+            t = 3
             find_button_clicks[3] = t3_btn
-        if find_button_clicks[-1] != find_btn:
-            t = 'find button was pressed'
+        elif find_button_clicks[-1] != find_btn:
+            t = -1
             find_button_clicks[-1] = find_btn
         
         options = dict(zip(['search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], args))
         if not options['search_by']:
             options['search_by'] = ['Title']
 
-        return [str(options)]
+        tab = 'find-movie-tab'
+        if t1_btn or t2_btn or t3_btn or find_btn:
+            tab = 'search-result-tab'
+            movie_finder.find_movie(top_movie_num=t, **options)
+
+        return tab
 
 
     @app.callback(
@@ -79,7 +81,6 @@ def register_find_movie_callbacks(app):
     def toggle_collapse(n, is_open, children):
         
         class_name = children[1]['props']['className']
-        print(class_name)
         if class_name == 'fa-solid fa-angle-down':
             class_name = 'fa-solid fa-angle-up'
         else:
