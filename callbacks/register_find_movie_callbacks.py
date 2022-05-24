@@ -59,7 +59,7 @@ def register_find_movie_callbacks(app):
             t = -1
             find_button_clicks[-1] = find_btn
         
-        options = dict(zip(['search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], args))
+        options = dict(zip(['input', 'search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], [input]+args))
         if not options['search_by']:
             options['search_by'] = ['Title']
 
