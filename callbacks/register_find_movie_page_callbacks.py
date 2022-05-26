@@ -10,7 +10,7 @@ from glob import glob
 from config import find_button_clicks, movie_finder
 from collections import OrderedDict
 
-def register_find_movie_callbacks(app):
+def register_find_movie_page_callbacks(app):
     @app.callback([Output('top-movie-1', 'children'),
     Output('top-movie-2', 'children'),
     Output('top-movie-3', 'children')],
@@ -33,18 +33,19 @@ def register_find_movie_callbacks(app):
         return movies
 
     @app.callback(Output('tabs-graph', 'value'),
-    [Input('top-movie-1-find-btn', 'n_clicks'),
+    [Input('placeholder', 'children'),
+    Input('top-movie-1-find-btn', 'n_clicks'),
     Input('top-movie-2-find-btn', 'n_clicks'),
     Input('top-movie-3-find-btn', 'n_clicks'),
     Input('find-movie-btn', 'n_clicks')],
     [State('movie-input', 'value'),
+    State('search-by-dropdown', 'value'),
     State('min-movie-year-input', 'value'),
     State('max-movie-year-input', 'value'),
-    State('search-by-dropdown', 'value'),
     State('min-movie-rating-input', 'value'),
     State('limit-search-input', 'value'),
     State('fuzzy-match-checkbox', 'value')])
-    def find_movie_click(t1_btn, t2_btn, t3_btn, find_btn, input, *args):
+    def find_movie_click(_, t1_btn, t2_btn, t3_btn, find_btn, input, *args):
         t = None 
         if find_button_clicks[1] != t1_btn:
             t = 1
@@ -59,15 +60,35 @@ def register_find_movie_callbacks(app):
             t = -1
             find_button_clicks[-1] = find_btn
         
-        options = dict(zip(['input', 'search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], [input]+args))
+        options = dict(zip(['input', 'search_by', 'min_year', 'max_year', 'min_rating', 'limit', 'fuzzy'], [input]+list(args)))
         if not options['search_by']:
             options['search_by'] = ['Title']
 
         tab = 'find-movie-tab'
-        if t1_btn or t2_btn or t3_btn or find_btn:
+        if t and t > 0:
             tab = 'search-result-tab'
             movie_finder.find_movie(top_movie_num=t, **options)
+        elif t == -1 and input:
+            tab = 'results-tab'
+            movie_finder.find_movie(top_movie_num=t, **options)
 
+            inputs = [Input(f'go-to-movie-page-button-{i}', 'n_clicks') for i in range(len(movie_finder.search_results))]
+            
+            print('VVVVVVVVVVV')
+            @app.callback(Output('placeholder', 'children'), inputs)
+            def init_movie_buttons(*btns):
+                print(btns)
+
+                return None
+            print('ZZZZZZZZZZZZZ')
+
+            print('AAAA', len(movie_finder.search_results))
+
+        elif not t and find_btn:
+            # print(movie_finder.found_movie)
+            print('AAAAA')
+            tab = 'search-result-tab'
+        
         return tab
 
 
