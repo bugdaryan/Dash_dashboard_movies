@@ -12,7 +12,7 @@ from collections import OrderedDict
 from dash import Dash, dash_table
 
 
-def register_result_page_callbacks(app):
+def register_movie_page_callbacks(app):
     @app.callback([Output('result-movie', 'children'),
     Output('result-movie-image', 'src')],
     [Input('tabs-graph', 'value')])

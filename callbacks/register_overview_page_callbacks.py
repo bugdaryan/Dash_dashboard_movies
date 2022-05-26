@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-def register_overview_callbacks(app):
+def register_overview_page_callbacks(app):
 
 #################### AVERAGE RATING ####################
     @app.callback(Output('average-rating-over-time-graph', 'children'),
