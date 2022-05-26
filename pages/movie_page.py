@@ -2,7 +2,7 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 from config import movie_finder
 
-result_page = dbc.Container([
+movie_page = dbc.Container([
     html.Br(),
     dbc.Row([
         dbc.Col(width=1),

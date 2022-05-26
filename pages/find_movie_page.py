@@ -3,6 +3,8 @@ import dash_bootstrap_components as dbc
 
 
 find_movie_page = dbc.Container([
+    html.Label('', id='placeholder'),
+    html.Br(),
     dbc.Row([
         dbc.Col(width=4),
         dbc.Col([
