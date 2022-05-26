@@ -19,7 +19,7 @@ class MovieFinder:
 
         self.found_movie = None
         self.top_movies = movies
-        self.search_result = []
+        self.search_results = []
 
     
     def find_movie(self, top_movie_num=None, **kwargs):
@@ -35,6 +35,10 @@ class MovieFinder:
                 results = movies.find({'title': kwargs['input']}) \
                             .collation(config.case_insensitive_collation) \
                             .limit(kwargs['limit'])
-
-                self.search_result = list(results)
+                results = list(results)
+                for movie in results:
+                    api_info = self.api_finder.find_movie(movie['metadata']['imdb_id'])
+                    movie['image'] = api_info['Poster']
+                    movie['api_info'] = api_info
+                self.search_results = list(results)
 
