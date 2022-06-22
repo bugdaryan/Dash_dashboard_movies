@@ -15,8 +15,8 @@ register_movie_page_callbacks(app)
 
 app.layout = html.Div([
     html.H1('Movie Analysis', style={'textAlign': 'center'}),
-    dcc.Tabs(id="tabs-graph", value='find-movie-tab', children=[
-        # dcc.Tab(overview_page, label='Overview', value='overview-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
+    dcc.Tabs(id="tabs-graph", value='overview-tab', children=[
+        dcc.Tab(overview_page, label='Overview', value='overview-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
         dcc.Tab(find_movie_page, label='Find a movie', value='find-movie-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
         dcc.Tab(results_page, label='Search results', value='results-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
         dcc.Tab(movie_page, label='Movie', value='search-result-tab', style={'fontSize': '32px'}, selected_style={'fontSize': '32px'}),
