@@ -1,7 +1,11 @@
-dash
+dash==2.1.0
+dash_bootstrap_components==1.1.0
 names
 numpy
 pandas
 plotly
 openpyxl
 xlrd
+requests
+pymongo
+python-dotenv
