@@ -8,6 +8,7 @@ from pages import overview_page, find_movie_page, results_page, movie_page
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
+server = app.server
 register_overview_page_callbacks(app)
 register_find_movie_page_callbacks(app)
 register_results_page_callbacks(app)
