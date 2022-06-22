@@ -11,3 +11,4 @@ pymongo
 python-dotenv
 gunicorn
 werkzeug==0.16.1
+markupsafe==2.0.1
