@@ -9,3 +9,4 @@ xlrd
 requests
 pymongo
 python-dotenv
+gunicorn
