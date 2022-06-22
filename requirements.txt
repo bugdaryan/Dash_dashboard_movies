@@ -10,3 +10,4 @@ requests
 pymongo
 python-dotenv
 gunicorn
+werkzeug==0.16.1
